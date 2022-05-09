@@ -17,6 +17,7 @@ const validateEnv = () => {
     DB_NAME: str(),
     DB_USERNAME: str(),
     DB_PASSWORD: str(),
+    MONGO_URL: str(),
   });
 };
 

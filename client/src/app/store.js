@@ -1,7 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userSlice from "../features/userSlice";
+import conversationSlice from "../features/conversationSlice";
+import messageSlice from "../features/messageSlice";
 import chatSlice from "../features/chatSlice";
 import appApi from "../services/appApi";
+import { setupListeners } from "@reduxjs/toolkit/query";
 
 //persist store
 import storage from "redux-persist/lib/storage";
@@ -13,6 +16,8 @@ import thunk from "redux-thunk";
 
 const reducer = combineReducers({
   user: userSlice,
+  // conversation: conversationSlice,
+  // message: messageSlice,
   chat: chatSlice,
   [appApi.reducerPath]: appApi.reducer,
 });
@@ -31,5 +36,7 @@ const store = configureStore({
   reducer: persistedReducer,
   middleware: [thunk, appApi.middleware],
 });
+
+// setupListeners(store.dispatch);
 
 export default store;

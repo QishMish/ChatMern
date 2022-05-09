@@ -2,20 +2,37 @@ const Conversation = require("./../mongodb/Conversation");
 const Message = require("./../mongodb/Message");
 const { User } = require("../models");
 
-const fetchConversations = async () => {
-  const conversations = await Conversation.find({});
+const fetchConversations = async (userId) => {
+  const conversations = await Conversation.find({
+    participants: {
+      $in: [userId],
+    },
+  });
   return {
     status: 200,
     response: conversations,
   };
 };
 const fetchConversationMessages = async (conversationId) => {
-  const Messages = await Message.find({
-    _id: conversationId,
+  const messages = await Message.find({
+    conversationId: conversationId,
   });
+
+  const messagesWithUserName = await Promise.all(
+    messages.map(async (msg) => {
+      const { username } = await User.findOne({
+        attributes: ["username"],
+        where: {
+          id: msg.authorId,
+        },
+      });
+      return { ...msg._doc, username };
+    })
+  );
+
   return {
     status: 200,
-    response: Messages,
+    response: messagesWithUserName,
   };
 };
 const sendMessage = async (authorId, addresserId, content) => {

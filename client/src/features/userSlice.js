@@ -17,7 +17,10 @@ export const userSlice = createSlice({
       appApi.endpoints.signInUser.matchFulfilled,
       (state, { payload }) => payload
     );
-    builder.addMatcher(appApi.endpoints.logOutUser.matchFulfilled, () => null);
+    builder.addMatcher(
+      appApi.endpoints.logOutUser.matchFulfilled,
+      (state) => null
+    );
   },
 });
 

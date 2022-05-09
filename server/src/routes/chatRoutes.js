@@ -1,9 +1,15 @@
 const chatRoutes = require("express").Router();
 const chatController = require("../controllers/chatController");
+const authorization = require("../middlewares/authorization");
 
-chatRoutes.get("/conversations", chatController.fetchConversations);
+chatRoutes.get(
+  "/conversations",
+  authorization,
+  chatController.fetchConversations
+);
 chatRoutes.get(
   "/conversations/:conversationId",
+  authorization,
   chatController.fetchConversationMessages
 );
 chatRoutes.post("/messages", chatController.sendMessage);

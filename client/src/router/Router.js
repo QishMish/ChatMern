@@ -23,7 +23,7 @@ function Router() {
         {user && (
           <Route path="/" element={<Chat />}>
             <Route index element={<ChatHero />} />
-            <Route path=":chatId" element={<ChatComponent />} />
+            <Route path=":conversationId" element={<ChatComponent />} />
           </Route>
         )}
       </Routes>

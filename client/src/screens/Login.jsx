@@ -31,6 +31,7 @@ function Login() {
       password,
     };
     const response = await signUpUser(userData);
+    console.log(response);
     if (response.data.token) {
       navigate("/");
     }

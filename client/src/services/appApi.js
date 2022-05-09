@@ -4,7 +4,15 @@ const appApi = createApi({
   reducerPath: "appApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:3333",
+    prepareHeaders: (headers, { getState }) => {
+      const token = getState().user?.token;
+      if (token) {
+        headers.set("authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
   }),
+  tagTypes: ["Conversation", "Message"],
   endpoints: (builder) => ({
     signUpUser: builder.mutation({
       query: (user) => ({
@@ -27,12 +35,21 @@ const appApi = createApi({
         body: payload,
       }),
     }),
-    fetchConversations: builder.mutation({
-      query: (payload) => ({
+    fetchConversations: builder.query({
+      query: () => ({
         url: "/chat/conversations",
         method: "GET",
         // body: payload,
       }),
+      providesTags: ["Conversation"],
+    }),
+    fetchConversationMessages: builder.query({
+      query: (id) => ({
+        url: `/chat/conversations/${id}`,
+        method: "GET",
+      }),
+      // providesTags: ["Message"],
+      providesTags: ["Message"],
     }),
   }),
 });
@@ -41,7 +58,8 @@ export const {
   useSignUpUserMutation,
   useSignInUserMutation,
   useLogOutUserMutation,
-  useFetchConversationsMutation,
+  useFetchConversationsQuery,
+  useFetchConversationMessagesQuery,
 } = appApi;
 
 export default appApi;

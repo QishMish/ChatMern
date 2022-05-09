@@ -3,12 +3,23 @@ import appApi from "../services/appApi";
 
 export const chatSlice = createSlice({
   name: "chat",
-  initialState: null,
+  initialState: {
+    conversations: [],
+    messages: [],
+  },
   reducers: {},
   extraReducers: (builder) => {
     builder.addMatcher(
       appApi.endpoints.fetchConversations.matchFulfilled,
-      (state, { payload }) => payload
+      (state, { payload }) => {
+        state.conversations = payload;
+      }
+    );
+    builder.addMatcher(
+      appApi.endpoints.fetchConversationMessages.matchFulfilled,
+      (state, { payload }) => {
+        state.messages = payload;
+      }
     );
   },
 });

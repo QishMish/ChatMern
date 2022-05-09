@@ -3,9 +3,11 @@
 import React from "react";
 import Avatar from "../../../assets/images/avatar.png";
 import { BiTime } from "react-icons/bi";
+import { useSelector } from "react-redux";
 
-function Message({ username, message }) {
-  const loggedInUser = "admin";
+function Message({ username, authorId, message }) {
+  const loggedInUser = useSelector((state) => state.user.user.username);
+
   return (
     <>
       {loggedInUser === username ? (

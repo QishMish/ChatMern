@@ -7,24 +7,24 @@ import LeftBarWrapper from "../LeftBarWrapper";
 import ChatCard from "../ChatCard";
 import { RiWechatLine } from "react-icons/ri";
 import { useSelector } from "react-redux";
-import { useFetchConversationsMutation } from "../../services/appApi";
+import { useFetchConversationsQuery } from "../../services/appApi";
 import { useSocketContext } from "../../context/socketContext";
+
 function ChatSidebar() {
-  const conversations = useSelector((state) => state.chat);
+  const conversations = useSelector((state) => state.chat.conversations);
+  // const user = useSelector((state) => state.user);
 
   const { socket } = useSocketContext();
 
-  const [fetchConversations, { isLoading, error }] =
-    useFetchConversationsMutation();
+  const { data, isLoading, error } = useFetchConversationsQuery();
 
-  useEffect(() => {
-    fetchCOnversationData();
-    console.log(isLoading);
-  }, []);
+  // useEffect(() => {
+  //   fetchCOnversationData();
+  // }, []);
 
-  const fetchCOnversationData = async () => {
-    await fetchConversations();
-  };
+  // const fetchCOnversationData = async () => {
+  //   await fetchConversations();
+  // };
 
   return (
     <LeftBarWrapper>
@@ -43,7 +43,7 @@ function ChatSidebar() {
         {isLoading ? (
           <h1>Loading</h1>
         ) : (
-          conversations?.map((conversation, index) => {
+          data.map((conversation, index) => {
             return <ChatCard {...conversation} key={index} />;
           })
         )}

@@ -2,7 +2,8 @@ const chatService = require("../services/chatService");
 const catchAsync = require("../utils/catchAsync");
 
 const fetchConversations = catchAsync(async (req, res) => {
-  const { status, response } = await chatService.fetchConversations();
+  const { id: userId } = req.user;
+  const { status, response } = await chatService.fetchConversations(userId);
   res.status(status).json(response);
 });
 const fetchConversationMessages = catchAsync(async (req, res) => {

@@ -21,6 +21,7 @@ function Sidebar() {
   const logOut = async (e) => {
     e.preventDefault();
     await logOutUser(user);
+    // localStorage.removeItem("persist:root");
     window.location.replace("/login");
   };
 
