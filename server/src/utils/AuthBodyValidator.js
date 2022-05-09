@@ -20,14 +20,14 @@ exports.validateRegisterBody = () => {
       .trim()
       .isLength({ min: 6 })
       .withMessage("Password must be at least 6 characters length"),
-    body("confirmPassword")
-      .notEmpty()
-      .custom((value, { req }) => {
-        if (value !== req.body.password) {
-          throw new Error("Password confirmation does not match password");
-        }
-        return true;
-      }),
+    // body("confirmPassword")
+    //   .notEmpty()
+    //   .custom((value, { req }) => {
+    //     if (value !== req.body.password) {
+    //       throw new Error("Password confirmation does not match password");
+    //     }
+    //     return true;
+    //   }),
   ];
 };
 exports.validateLoginBody = () => {

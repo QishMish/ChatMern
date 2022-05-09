@@ -12,7 +12,7 @@ function ChatComponent() {
   const { messages, error, errorMessage, loading } = messagesState;
 
   useEffect(() => {
-    fetchMessages();
+    // fetchMessages();
   }, []);
 
   return (

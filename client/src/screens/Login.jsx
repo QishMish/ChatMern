@@ -1,18 +1,21 @@
 import React, { useState, useEffect, useContext } from "react";
 import { RiUser2Line } from "react-icons/ri";
 import { RiLockPasswordLine } from "react-icons/ri";
-import { Link } from "react-router-dom";
-import authContext from "../../context/authContext";
+import { Link, useNavigate } from "react-router-dom";
+import authContext from "../context/authContext";
+import { useSignInUserMutation } from "../services/appApi";
 
 function Login() {
-  const context = useContext(authContext);
-  const { userState, loginHandler } = context;
+  //   const context = useContext(authContext);
+  //   const { userState, loginHandler } = context;
+  const [signUpUser, { isLoading, error }] = useSignInUserMutation();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    email: "",
+    username: "",
     password: "",
   });
-  const { email, password } = formData;
+  const { username, password } = formData;
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -21,13 +24,18 @@ function Login() {
     }));
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     const userData = {
-      email,
+      username,
       password,
     };
-    loginHandler(userData);
+    const response = await signUpUser(userData);
+    if (response.data.token) {
+      navigate("/");
+    }
+    return;
+    // loginHandler(userData);
   };
   return (
     <section className="h-screen w-full bg-secondaryDark flex flex-col justify-center	items-center">
@@ -52,13 +60,13 @@ function Login() {
               value={username}
               onChange={onChange}
             /> */}
-             <input
+            <input
               type="text"
-              name="email"
-              id="email"
-              placeholder="Enter Email"
-              className="  bg-primaryDarkLight outline-none p-3 w-full rounded-r-md"
-              value={email}
+              name="username"
+              id="username"
+              placeholder="Enter username"
+              className="  bg-primaryDarkLight text-primaryWhite  outline-none p-3 w-full rounded-r-md"
+              value={username}
               onChange={onChange}
             />
           </div>
@@ -70,11 +78,11 @@ function Login() {
               <RiLockPasswordLine className="text-fontLightGrey" />
             </div>
             <input
-              type="text"
+              type="password"
               name="password"
               id="password"
               placeholder="Enter Password"
-              className="  bg-primaryDarkLight outline-none p-3 w-full rounded-r-md"
+              className="  bg-primaryDarkLight text-primaryWhite  outline-none p-3 w-full rounded-r-md"
               value={password}
               onChange={onChange}
             />
@@ -89,7 +97,7 @@ function Login() {
         {/* </Link> */}
         <div className="flex flex-row justify-start items-center mt-6 ">
           <input type="checkbox" className="text-ms" />
-          <label for="checkbox" className="pl-2 text-fontGrey text-md">
+          <label htmlFor="checkbox" className="pl-2 text-fontGrey text-md">
             Remember Me
           </label>
         </div>

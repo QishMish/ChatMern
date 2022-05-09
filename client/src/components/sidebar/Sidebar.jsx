@@ -10,8 +10,20 @@ import { BsMoon } from "react-icons/bs";
 import Avatar from "../../assets/images/avatar.png";
 import Logo from "../../assets/images/logo.svg";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useLogOutUserMutation } from "../../services/appApi";
 
 function Sidebar() {
+  const user = useSelector((state) => state.user);
+
+  const [logOutUser] = useLogOutUserMutation();
+
+  const logOut = async (e) => {
+    e.preventDefault();
+    await logOutUser(user);
+    window.location.replace("/login");
+  };
+
   return (
     <section className="flex flex-col items-center justify-between w-16 h-screen py-6 bg-secondaryDarkLight md:w-20">
       <div className="flex flex-col items-center justify-between space-y-6">
@@ -59,12 +71,13 @@ function Sidebar() {
         </div> */}
       </div>
       <div className="flex flex-col items-center justify-between space-y-6 ">
-        <Link to="/login" className="p-2 rounded-md cursor-pointer md:p-3">
-          <FiLogIn
-            className="w-8 h-6 cursor-pointer text-red md:h-8"
-            id="settings"
-          />
-        </Link>
+        {/* <Link to="/login" className="p-2 rounded-md cursor-pointer md:p-3"> */}
+        <FiLogIn
+          onClick={logOut}
+          className="w-8 h-6 cursor-pointer text-red md:h-8"
+          id="settings"
+        />
+        {/* </Link> */}
 
         {/* <BsMoon className='w-8 h-8 text-secondaryWhite ' /> */}
         {/* <img src={Avatar} width="30px" /> */}

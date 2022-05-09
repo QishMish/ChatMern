@@ -2,13 +2,16 @@ import React, { useState, useEffect, useContext } from "react";
 import { AiOutlineMail } from "react-icons/ai";
 import { RiUser2Line } from "react-icons/ri";
 import { RiLockPasswordLine } from "react-icons/ri";
-import { Link } from "react-router-dom";
-import authContext from "../../context/authContext";
+import { Link, useNavigate } from "react-router-dom";
+import authContext from "../context/authContext";
+import { useSignUpUserMutation } from "../services/appApi";
 
 function Register() {
-  const context = useContext(authContext);
-  const { userState, registerHandler } = context;
+  //   const context = useContext(authContext);
+  //   const { userState, registerHandler } = context;
 
+  const [signUpUser, { isLoading, error }] = useSignUpUserMutation();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -23,14 +26,19 @@ function Register() {
     }));
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     const userData = {
       username,
       email,
       password,
     };
-    registerHandler(userData);
+    const response = await signUpUser(userData);
+    if (response.data.token) {
+      navigate("/");
+    }
+    return;
+    // registerHandler(userData);
   };
 
   return (
@@ -53,7 +61,7 @@ function Register() {
               name="email"
               id="email"
               placeholder="Enter Email"
-              className="  bg-primaryDarkLight outline-none p-3 w-full rounded-r-md"
+              className="  bg-primaryDarkLight text-primaryWhite outline-none p-3 w-full rounded-r-md"
               value={email}
               onChange={onChange}
             />
@@ -70,7 +78,7 @@ function Register() {
               name="username"
               id="username"
               placeholder="Enter Username"
-              className="  bg-primaryDarkLight outline-none p-3 w-full rounded-r-md"
+              className="  bg-primaryDarkLight text-primaryWhite outline-none p-3 w-full rounded-r-md"
               value={username}
               onChange={onChange}
             />
@@ -83,22 +91,22 @@ function Register() {
               <RiLockPasswordLine className="text-fontLightGrey" />
             </div>
             <input
-              type="text"
+              type="password"
               name="password"
               id="password"
               placeholder="Enter Password"
-              className="  bg-primaryDarkLight outline-none p-3 w-full rounded-r-md"
+              className="  bg-primaryDarkLight outline-none p-3 w-full rounded-r-md text-primaryWhite"
               value={password}
               onChange={onChange}
             />
           </div>
         </div>
         {/* <Link to="/chat"> */}
-          <input
-            type="submit"
-            value="Sign Up"
-            className="h-10 mt-4 w-80 rounded-sm text-primaryWhite bg-purple font-semibold cursor-pointer "
-          />
+        <input
+          type="submit"
+          value="Sign Up"
+          className="h-10 mt-4 w-80 rounded-sm text-primaryWhite bg-purple font-semibold cursor-pointer "
+        />
         {/* </Link> */}
       </form>
       <p className="m-3 text-fontGrey ">
