@@ -51,6 +51,13 @@ const appApi = createApi({
       // providesTags: ["Message"],
       providesTags: ["Message"],
     }),
+    sendPrivateMessage: builder.mutation({
+      query: (message) => ({
+        url: "/chat/messages",
+        method: "POST",
+        body: message,
+      }),
+    }),
   }),
 });
 
@@ -60,6 +67,7 @@ export const {
   useLogOutUserMutation,
   useFetchConversationsQuery,
   useFetchConversationMessagesQuery,
+  useSendPrivateMessageMutation,
 } = appApi;
 
 export default appApi;

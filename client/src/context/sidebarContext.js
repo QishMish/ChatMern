@@ -3,7 +3,7 @@ import { createContext, useState, useContext } from "react";
 const ContentContext = createContext();
 
 const SideBarProvider = ({ children }) => {
-  const [currentElement, setCurrentElement] = useState("");
+  const [currentElement, setCurrentElement] = useState("sidechat");
 
   const sideBarContentHandler = (id) => {
     setCurrentElement(id);

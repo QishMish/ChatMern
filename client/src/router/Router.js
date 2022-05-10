@@ -13,10 +13,11 @@ import { useSelector } from "react-redux";
 function Router() {
   const user = useSelector((state) => state.user);
   console.log(user);
+
   return (
     <>
       <Routes>
-        <Route path="/" element={<Navigate to="/register" />} />
+        <Route path="/" element={!user && <Navigate to="/register" />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/reset" element={<Reset />} />

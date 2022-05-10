@@ -5,18 +5,21 @@ import "./style/dist/output.css";
 import { AuthProvider } from "./context/authContext";
 import { MessageProvider } from "./context/messageContext";
 import { SocketPorovider } from "./context/socketContext";
+import { SideBarProvider } from "./context/sidebarContext";
 
 function App() {
   return (
     <>
       <BrowserRouter>
-        <SocketPorovider>
-          <AuthProvider>
-            <MessageProvider>
+        {/* <SocketPorovider> */}
+        <AuthProvider>
+          <MessageProvider>
+            <SideBarProvider>
               <Router />
-            </MessageProvider>
-          </AuthProvider>
-        </SocketPorovider>
+            </SideBarProvider>
+          </MessageProvider>
+        </AuthProvider>
+        {/* </SocketPorovider> */}
       </BrowserRouter>
     </>
   );

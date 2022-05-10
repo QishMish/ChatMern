@@ -2,7 +2,6 @@ import React from "react";
 import { BiSearch } from "react-icons/bi";
 
 function SearchInput({ placeholder, ...props }) {
-  console.log(props);
   return (
     <div className="relative">
       <input

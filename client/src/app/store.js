@@ -37,6 +37,6 @@ const store = configureStore({
   middleware: [thunk, appApi.middleware],
 });
 
-// setupListeners(store.dispatch);
+setupListeners(store.dispatch);
 
 export default store;
