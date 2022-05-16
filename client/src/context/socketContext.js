@@ -5,11 +5,10 @@ import { io } from "socket.io-client";
 const socketContext = createContext();
 
 let socketURL = "http://localhost:3333";
+const socket = io(socketURL, { transports: ["websocket"] });
 
 const SocketPorovider = ({ children }) => {
-  const [socket, setSocket] = useState(
-    io(socketURL, { transports: ["websocket"] })
-  );
+  // const [socket, setSocket] = useState(null);
   // let socketURL = "http://localhost:3333";
   // const socket = useRef();
 
@@ -21,11 +20,11 @@ const SocketPorovider = ({ children }) => {
 
   const user = useDispatch((state) => state.user.user);
 
-  useEffect(() => {
-    console.log("first");
-
-    return () => socket?.disconnect();
-  }, [socketURL]);
+  // useEffect(() => {
+  //   console.log(socket);
+  //   setSocket(io(socketURL, { transports: ["websocket"] }));
+  //   return () => socket?.disconnect();
+  // }, [socketURL]);
 
   return (
     <socketContext.Provider value={{ socket: socket }}>

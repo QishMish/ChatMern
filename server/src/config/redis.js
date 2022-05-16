@@ -1,28 +1,12 @@
 const { createClient } = require("redis");
 
-const redisClient = async () => {
-  const client = createClient();
+const client = createClient();
+
+(async () => {
   await client.connect();
+})();
 
-  return client;
-};
+client.on("connect", () => console.log("::> Redis Client Connected"));
+client.on("error", (err) => console.log("<:: Redis Client Error", err));
 
-redisClient();
-
-// await client.set("key", "value");
-// const value = await client.get("key");
-// console.log(value);
-// class Redis {
-//   client = createClient();
-
-//   constructor() {
-//     client.on("error", (err) => console.log("Redis Client Error", err));
-//   }
-//   set(){
-
-//   }
-//   get(){
-
-//   }
-// }
-module.exports = redisClient;
+module.exports = client;

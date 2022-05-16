@@ -95,6 +95,9 @@ function Sidebar() {
       </div>
       <div className="flex flex-col items-center justify-between space-y-6 ">
         {/* <Link to="/login" className="p-2 rounded-md cursor-pointer md:p-3"> */}
+        <div className="my-1 text-primaryWhite font-bold capitalize">
+          {user.user.username}
+        </div>
         <FiLogIn
           onClick={logOut}
           className="w-8 h-6 cursor-pointer text-red md:h-8"

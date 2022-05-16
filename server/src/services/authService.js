@@ -26,7 +26,6 @@ const register = async (email, username, password) => {
     },
   };
 };
-
 const login = async (username, password) => {
   console.log("token");
   const user = await User.findOne({
@@ -54,7 +53,6 @@ const login = async (username, password) => {
     },
   };
 };
-
 module.exports = {
   login,
   register,

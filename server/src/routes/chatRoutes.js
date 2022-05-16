@@ -12,10 +12,18 @@ chatRoutes.get(
   authorization,
   chatController.fetchConversationMessages
 );
-chatRoutes.post("/messages", chatController.sendMessage);
-chatRoutes.post("/room", chatController.createRoom);
-chatRoutes.post("/room/:roomId", chatController.sendRoomMessage);
-chatRoutes.post("/room/add/:roomId", chatController.addChatRoomMembers);
-chatRoutes.post("/room/remove/:roomId", chatController.removeChatRoomMembers);
+chatRoutes.post("/messages", authorization, chatController.sendMessage);
+chatRoutes.post("/room", authorization, chatController.createRoom);
+chatRoutes.post("/room/:roomId", authorization, chatController.sendRoomMessage);
+chatRoutes.post(
+  "/room/add/:roomId",
+  authorization,
+  chatController.addChatRoomMembers
+);
+chatRoutes.post(
+  "/room/remove/:roomId",
+  authorization,
+  chatController.removeChatRoomMembers
+);
 
 module.exports = chatRoutes;

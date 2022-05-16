@@ -9,12 +9,12 @@ import store from "./app/store";
 const persistedStore = persistStore(store);
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistedStore}>
-        <App />
-      </PersistGate>
-    </Provider>
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistedStore}>
+      <App />
+    </PersistGate>
+  </Provider>,
+  // </React.StrictMode>,
   document.getElementById("root")
 );

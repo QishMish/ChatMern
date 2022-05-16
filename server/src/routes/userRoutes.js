@@ -1,22 +1,8 @@
 const userRoutes = require("express").Router();
-const authController = require("../controllers/authController");
-const validateAuthBody = require("../middlewares/validateAuthBody");
-const {
-  validateRegisterBody,
-  validateLoginBody,
-} = require("../utils/AuthBodyValidator");
+const authorization = require("../middlewares/authorization");
+const userController = require("../controllers/user.controller");
 
-userRoutes.post(
-  "/register",
-  validateRegisterBody(),
-  validateAuthBody,
-  authController.register
-);
-userRoutes.post(
-  "/login",
-  validateLoginBody(),
-  validateAuthBody,
-  authController.login
-);
+userRoutes.get("/", authorization, userController.getUsers);
+userRoutes.get("/current", authorization, userController.fetchUser);
 
 module.exports = userRoutes;

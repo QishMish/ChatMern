@@ -11,15 +11,15 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        {/* <SocketPorovider> */}
-        <AuthProvider>
-          <MessageProvider>
-            <SideBarProvider>
-              <Router />
-            </SideBarProvider>
-          </MessageProvider>
-        </AuthProvider>
-        {/* </SocketPorovider> */}
+        <SocketPorovider>
+          <AuthProvider>
+            <MessageProvider>
+              <SideBarProvider>
+                <Router />
+              </SideBarProvider>
+            </MessageProvider>
+          </AuthProvider>
+        </SocketPorovider>
       </BrowserRouter>
     </>
   );

@@ -2,7 +2,7 @@ const { HttpException } = require("../exception/HttpException");
 const { verifyJwt } = require("../utils/jwt");
 const { User } = require("../models");
 
-const verifyAuthMiddleware = async (req, res, next) => {
+const verifyAuthMiddleware = catchAsync(async (req, res, next) => {
   let token;
   if (
     req.headers.authorization &&
@@ -13,7 +13,7 @@ const verifyAuthMiddleware = async (req, res, next) => {
     token = req.cookies.jwt;
   }
   if (!token) {
-    next(HttpException(400, "Token not found"));
+    next(new HttpException(400, "Token not found"));
   }
   const decodedToken = await verifyJwt(token, process.env.SECRET_KEY);
 
@@ -25,10 +25,10 @@ const verifyAuthMiddleware = async (req, res, next) => {
   });
 
   if (!user) {
-    next(HttpException(400, "User does not exist"));
+    next(new HttpException(400, "User does not exist"));
   }
   req.user = user;
   next();
-};
+});
 
 module.exports = verifyAuthMiddleware;

@@ -1,8 +1,13 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Avatar from "../assets/images/avatar.png";
 
-function ChatCard({ chatRoomName, _id }) {
+function ChatCard({ chatRoomName, _id, participants }) {
+  const user = useSelector((state) => state.user.user);
+
+  const adresserName = participants.find((p) => Number(p) !== Number(user.id));
+
   return (
     <Link
       to={_id}
@@ -13,7 +18,7 @@ function ChatCard({ chatRoomName, _id }) {
           <img src={Avatar} alt="avatar" className="w-10 rounded" />
         </div>
         <div className="flex flex-col">
-          <span>{chatRoomName}</span>
+          <span>{adresserName}</span>
           <span className="self-start justify-self-start">chat text</span>
         </div>
       </div>

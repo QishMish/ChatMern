@@ -58,6 +58,12 @@ const appApi = createApi({
         body: message,
       }),
     }),
+    retrieveUsers: builder.query({
+      query: () => ({
+        url: "/user",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -68,6 +74,7 @@ export const {
   useFetchConversationsQuery,
   useFetchConversationMessagesQuery,
   useSendPrivateMessageMutation,
+  useRetrieveUsersQuery,
 } = appApi;
 
 export default appApi;

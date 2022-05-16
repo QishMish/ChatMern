@@ -8,6 +8,7 @@ const fetchConversations = async (userId) => {
       $in: [userId],
     },
   });
+
   return {
     status: 200,
     response: conversations,
@@ -20,12 +21,13 @@ const fetchConversationMessages = async (conversationId) => {
 
   const messagesWithUserName = await Promise.all(
     messages.map(async (msg) => {
-      const { username } = await User.findOne({
+      const { username, id } = await User.findOne({
         attributes: ["username"],
         where: {
           id: msg.authorId,
         },
       });
+
       return { ...msg._doc, username };
     })
   );
@@ -153,7 +155,6 @@ const addChatRoomMembers = async (roomId, members) => {
     },
   };
 };
-
 const removeChatRoomMembers = async (roomId, members) => {
   await Conversation.updateOne(
     { _id: roomId },

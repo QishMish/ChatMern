@@ -7,7 +7,11 @@ export const chatSlice = createSlice({
     conversations: [],
     messages: [],
   },
-  reducers: {},
+  reducers: {
+    addMessage: (state, action) => {
+      state.messages.push(action.payload);
+    },
+  },
   extraReducers: (builder) => {
     builder.addMatcher(
       appApi.endpoints.fetchConversations.matchFulfilled,
@@ -24,5 +28,5 @@ export const chatSlice = createSlice({
   },
 });
 
-export const {} = chatSlice.actions;
+export const { addMessage } = chatSlice.actions;
 export default chatSlice.reducer;
