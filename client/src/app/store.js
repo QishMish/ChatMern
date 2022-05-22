@@ -4,6 +4,7 @@ import conversationSlice from "../features/conversationSlice";
 import messageSlice from "../features/messageSlice";
 import chatSlice from "../features/chatSlice";
 import appApi from "../services/appApi";
+import uploadFile from "../services/uploadFile";
 import { setupListeners } from "@reduxjs/toolkit/query";
 
 //persist store
@@ -20,12 +21,14 @@ const reducer = combineReducers({
   // message: messageSlice,
   chat: chatSlice,
   [appApi.reducerPath]: appApi.reducer,
+  [uploadFile.reducerPath]: uploadFile.reducer,
 });
 
 const persistConfig = {
   key: "root",
   storage,
   blackList: [appApi.reducerPath],
+  whitelist: ["user"],
 };
 
 //persist store
@@ -34,9 +37,9 @@ const persistedReducer = persistReducer(persistConfig, reducer);
 //create store
 const store = configureStore({
   reducer: persistedReducer,
-  middleware: [thunk, appApi.middleware],
+  middleware: [thunk, appApi.middleware, uploadFile.middleware],
 });
 
-setupListeners(store.dispatch);
+// setupListeners(store.dispatch);
 
 export default store;

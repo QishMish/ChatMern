@@ -3,6 +3,8 @@ const crypto = require("crypto");
 
 const ROOT_URL = "http://localhost:3333";
 const JWT_SECRET_KEY = crypto.randomBytes(32).toString("hex");
+const SECRET_KEY = crypto.randomBytes(32).toString("hex");
+
 
 const validateEnv = () => {
   cleanEnv(process.env, {
@@ -12,6 +14,7 @@ const validateEnv = () => {
     PORT: port({ default: 3333 }),
     ROOT_URL: str({ default: ROOT_URL }),
     JWT_SECRET_KEY: str({ default: JWT_SECRET_KEY }),
+    SECRET_KEY:str({ default: SECRET_KEY }),
     Db_PORT: port({ default: 5432 }),
     DB_HOST: str(),
     DB_NAME: str(),

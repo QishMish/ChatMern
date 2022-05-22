@@ -12,14 +12,22 @@ const appApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Conversation", "Message"],
+  tagTypes: ["chat", "user"],
   endpoints: (builder) => ({
+    fetchLoggedUser: builder.query({
+      query: () => ({
+        url: "/user/current",
+        method: "GET",
+      }),
+      providesTags: ["user"],
+    }),
     signUpUser: builder.mutation({
       query: (user) => ({
         url: "/auth/register",
         method: "POST",
         body: user,
       }),
+      providesTags: ["user"],
     }),
     signInUser: builder.mutation({
       query: (user) => ({
@@ -27,6 +35,7 @@ const appApi = createApi({
         method: "POST",
         body: user,
       }),
+      providesTags: ["user"],
     }),
     logOutUser: builder.mutation({
       query: (payload) => ({
@@ -34,6 +43,15 @@ const appApi = createApi({
         method: "DELETE",
         body: payload,
       }),
+      providesTags: ["user"],
+    }),
+    updateUser: builder.mutation({
+      query: (body) => ({
+        url: "/user/update",
+        method: "PUT",
+        body: body,
+      }),
+      invalidatesTags: ["user"],
     }),
     fetchConversations: builder.query({
       query: () => ({
@@ -41,15 +59,25 @@ const appApi = createApi({
         method: "GET",
         // body: payload,
       }),
-      providesTags: ["Conversation"],
     }),
     fetchConversationMessages: builder.query({
       query: (id) => ({
         url: `/chat/conversations/${id}`,
         method: "GET",
       }),
-      // providesTags: ["Message"],
-      providesTags: ["Message"],
+    }),
+    createConversations: builder.mutation({
+      query: (payload) => ({
+        url: "/chat/conversations",
+        method: "POST",
+        body: payload,
+      }),
+    }),
+    deleteConversations: builder.mutation({
+      query: (id) => ({
+        url: `/chat/conversations/${id}`,
+        method: "DELETE",
+      }),
     }),
     sendPrivateMessage: builder.mutation({
       query: (message) => ({
@@ -75,6 +103,10 @@ export const {
   useFetchConversationMessagesQuery,
   useSendPrivateMessageMutation,
   useRetrieveUsersQuery,
+  useCreateConversationsMutation,
+  useDeleteConversationsMutation,
+  useUpdateUserMutation,
+  useFetchLoggedUserQuery,
 } = appApi;
 
 export default appApi;

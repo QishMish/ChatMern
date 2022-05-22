@@ -19,7 +19,27 @@ const getUsers = async (userIds, userNames, emails) => {
     response: users,
   };
 };
+const updateUser = async (id, userData) => {
+  console.log("first");
+  const user = await User.findOne({
+    where: {
+      id: id,
+    },
+  });
+  if (!user) {
+    throwHttpException(404, "User Not Found");
+  }
+  await User.update(userData, {
+    where: {
+      id: id,
+    },
+  });
 
+  return {
+    status: 200,
+    response: "success",
+  };
+};
 //privite functions
 const getUsersByField = async (field, options) => {
   const users = await Promise.all(
@@ -40,4 +60,5 @@ const getUsersByField = async (field, options) => {
 
 module.exports = {
   getUsers,
+  updateUser,
 };

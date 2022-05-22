@@ -16,6 +16,8 @@ const server = http.createServer(app);
 
 socket(server);
 
+
+
 app.use(cors());
 app.use(indexRoutes);
 app.use(globalExceptionHandler);

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Avatar from "../../assets/images/avatar.png";
 import { RiUser2Line } from "react-icons/ri";
 import { BiSearch } from "react-icons/bi";
@@ -12,13 +12,12 @@ import { useSocketContext } from "../../context/socketContext";
 import Spinner from "../../assets/images/Spinner.png";
 
 function ChatSidebar() {
-  // const conversations = useSelector((state) => state.chat.conversations);
-  // const user = useSelector((state) => state.user);
-
+  const conversations = useSelector((state) => state.chat.conversations);
   const { socket } = useSocketContext();
+  const [conversationSearch, setConversationSearch] = useState("");
 
   const {
-    data: conversations,
+    data,
     error,
     isLoading,
     isFetching,
@@ -26,15 +25,10 @@ function ChatSidebar() {
   } = useFetchConversationsQuery();
 
   useEffect(() => {
-    // fetchConversationData();
     refetch();
   }, []);
 
-  // const fetchConversationData = async () => {
-  //   await fetchConversations();
-  // };
 
-  // const isFetching = false;
 
   return (
     <LeftBarWrapper>
@@ -45,7 +39,7 @@ function ChatSidebar() {
         <RiWechatLine className="w-6 h-6 text-fontGrey cursor-pointer" />
       </div>
       <span className="text-fontLightGrey p-6 text-xl font-bold  text-center"></span>
-      <SearchInput placeholder="Search channel..." />
+      <SearchInput placeholder="Search channel..." conversationSearch={conversationSearch} setConversationSearch={setConversationSearch} />
       <div className="flex flex-col w-full rouded-sm mt-12 cursor-pointer text-fontLightGrey h-[calc(100vh_-_380px)] overflow-auto">
         <span className="mb-5">Recent</span>
         {isFetching ? (
@@ -54,7 +48,7 @@ function ChatSidebar() {
           </div>
         ) : (
           conversations.map((conversation, index) => {
-            return <ChatCard {...conversation} key={index} />;
+            return <ChatCard {...conversation} key={index}/>;
           })
         )}
         {}

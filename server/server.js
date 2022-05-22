@@ -10,7 +10,7 @@ const { PORT, MONGO_URL } = process.env;
 const main = async () => {
   server.listen(PORT, () => {
     //server starting
-    console.log(`Example app listening on port ${PORT}!`);
+    console.log(`app listening on port ${PORT}!`);
     //postgres connection
     sequelize
       .authenticate()

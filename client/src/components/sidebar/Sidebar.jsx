@@ -16,6 +16,8 @@ import { useLogOutUserMutation } from "../../services/appApi";
 import { useContentContext } from "../../context/sidebarContext";
 import SideBarItem from "./SideBarItem";
 import { useSocketContext } from "../../context/socketContext";
+import {CgProfile} from "react-icons/cg";
+
 
 function Sidebar() {
   const user = useSelector((state) => state.user);
@@ -29,9 +31,9 @@ function Sidebar() {
   };
 
   const icons = [
-    // { id: "sideprofile", Icon: RiUser2Line },
-    { id: "sidechat", Icon: BsChatSquareText },
+    { id: "sidechats", Icon: BsChatSquareText },
     { id: "sidecontacts", Icon: RiContactsLine },
+    { id: "sideprofile", Icon: CgProfile },
     // { id: "sidechannels", Icon: BiGroup },
     // { id: "sidesearch", Icon: RiSearchLine },
   ];
@@ -41,14 +43,14 @@ function Sidebar() {
   return (
     <section className="flex flex-col items-center justify-between h-100 w-16 h-screen py-6 bg-secondaryDarkLight md:w-20 ">
       <div className="flex flex-col items-center justify-between space-y-6">
-        <div className="p-2 rounded-md cursor-pointer md:p-3">
+        <Link to="/" className="p-2 rounded-md cursor-pointer md:p-3">
           {/* <BsFillChatDotsFill className="w-8 h-6 cursor-pointer text-purple md:h-8" /> */}
           <img
             src={Logo}
             className="w-8 h-6 cursor-pointer text-purple md:h-8"
             alt="logo"
           />
-        </div>
+        </Link>
       </div>
       <div className="flex flex-col items-center justify-between space-y-6">
         {/* <div className="p-2 rounded-md cursor-pointer active md:p-3">
@@ -96,7 +98,7 @@ function Sidebar() {
       <div className="flex flex-col items-center justify-between space-y-6 ">
         {/* <Link to="/login" className="p-2 rounded-md cursor-pointer md:p-3"> */}
         <div className="my-1 text-primaryWhite font-bold capitalize">
-          {user.user.username}
+          {user?.user?.username}
         </div>
         <FiLogIn
           onClick={logOut}

@@ -4,27 +4,12 @@ import { io } from "socket.io-client";
 
 const socketContext = createContext();
 
-let socketURL = "http://localhost:3333";
-const socket = io(socketURL, { transports: ["websocket"] });
-
 const SocketPorovider = ({ children }) => {
-  // const [socket, setSocket] = useState(null);
-  // let socketURL = "http://localhost:3333";
-  // const socket = useRef();
-
-  // useEffect(() => {
-  //   // socket.current = io(socketURL, { transports: ["websocket"] });
-  //   // console.log(socket);
-  //   socket.current = io(socketURL, { transports: ["websocket"] });
-  // }, [socketURL]);
-
-  const user = useDispatch((state) => state.user.user);
-
-  // useEffect(() => {
-  //   console.log(socket);
-  //   setSocket(io(socketURL, { transports: ["websocket"] }));
-  //   return () => socket?.disconnect();
-  // }, [socketURL]);
+  const [socket, setSetsocket] = useState(null);
+  useEffect(() => {
+    let socketURL = "http://localhost:3333";
+    setSetsocket(io(socketURL, { transports: ["websocket"] }));
+  }, []);
 
   return (
     <socketContext.Provider value={{ socket: socket }}>

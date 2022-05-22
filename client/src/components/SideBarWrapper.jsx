@@ -4,6 +4,7 @@ import React from "react";
 import Chats from "./chatSidebar/ChatSidebar";
 // import Profile from "../components/Profile";
 import Contacts from "./contactBar/ContactBar";
+import Profile from './profile/Profile'
 
 // import Search from "../components/Search";
 // import Navbar from "../components/Navbar/Navbar";
@@ -12,8 +13,8 @@ import Sidebar from "./sidebar/Sidebar";
 
 const getElement = (el, activeUsers, users) => {
   switch (el) {
-    // case "sideprofile":
-    //   return <Profile />;
+    case "sideprofile":
+      return <Profile />;
     case "sidechat":
       return <Chats />;
     case "sidecontacts":

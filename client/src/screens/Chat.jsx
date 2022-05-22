@@ -12,14 +12,14 @@ import SideBarWrapper from "../components/SideBarWrapper";
 import { SocketPorovider, useSocketContext } from "../context/socketContext";
 import { useSelector } from "react-redux";
 import { io } from "socket.io-client";
-import { useRetrieveUsersQuery } from "../services/appApi";
+import { useRetrieveUsersQuery, useFetchLoggedUserQuery } from "../services/appApi";
+import {addToken} from '../features/userSlice.js'
 
 function Chat() {
-  // let socketURL = "http://localhost:3333";
-  // const socket = io(socketURL, { transports: ["websocket"] });
   const { socket } = useSocketContext();
   const [activeUsers, setActiveUsers] = useState([]);
   const user = useSelector((state) => state.user.user);
+  const {data:currentUser,error:currentUserErr, isLoading:loadingCurrentUser, isFetching:currentUserIsFetching, refetch:refetchCurrentUser} = useFetchLoggedUserQuery();
 
   const {
     data: users,
@@ -30,17 +30,16 @@ function Chat() {
   } = useRetrieveUsersQuery();
 
   useEffect(() => {
-    socket.emit("user-joined", user.id);
-    socket.on("active-users", (users) => {
+    socket?.emit("user-joined", user.id);
+    socket?.on("active-users", (users) => {
       setActiveUsers(users);
     });
     refetch();
-    return () => socket.disconnect();
+    return () => socket?.disconnect();
   }, [user]);
 
   return (
-    // <SocketPorovider>
-    <section className="flex flex-row">
+    <section className="flex flex-row h-full">
       {/* <Sidebar /> */}
       <SideBarWrapper
         activeUsers={activeUsers?.filter((u) => u.userId !== user.id)}
@@ -49,7 +48,6 @@ function Chat() {
       {/* <ChatSidebar /> */}
       <Outlet />
     </section>
-    // </SocketPorovider>
   );
 }
 

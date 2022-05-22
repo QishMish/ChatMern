@@ -5,7 +5,7 @@ import Message from "./message/Message";
 import messageContext from "../../context/messageContext";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useFetchConversationMessagesQuery } from "../../services/appApi";
+import { useDeleteConversationsMutation, useFetchConversationMessagesQuery } from "../../services/appApi";
 import Spinner from "../../assets/images/Spinner.png";
 import { useSocketContext } from "../../context/socketContext";
 import { addMessage } from "../../features/chatSlice";
@@ -15,10 +15,15 @@ function ChatComponent() {
   const messages = useSelector((state) => state.chat.messages);
   const { socket } = useSocketContext();
   const dispatch = useDispatch();
+  const [prevRoom, setprevRoom] = useState("")
+  const [currentRoom, setCurrentRoom] = useState("")
   // const context = useContext(messageContext);
   // const { messagesState, fetchMessages } = context;
   // const { messages, error: e, errorMessage, loading } = messagesState;
   const scrollRef = useRef();
+  const prevRoomsRef = useRef();
+  const currRoomsRef = useRef();
+   
   const {
     data,
     // data: messages,
@@ -28,28 +33,54 @@ function ChatComponent() {
     refetch,
   } = useFetchConversationMessagesQuery(conversationId);
 
-  // console.log(useFetchConversationMessagesQuery());
-
   useEffect(() => {
     refetch();
-    // fetchConversationMessages(conversationId);
-  }, [conversationId]);
+  }, [conversationId, refetch]);
+
+  const [deleteConversation, {isLoading:deleteLoading, error:deleteError}] = useDeleteConversationsMutation()
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+   
   }, [messages]);
 
+  // useEffect(() => {
+
+  //   console.log("render");
+  //   // return () => deleteEmptyConversation()
+  //   return ()=> deleteEmptyConversation()
+
+  // }, [conversationId])
+  
+  const deleteEmptyConversation = async()=>{
+    console.log(messages);
+    if(messages.length < 1){
+      refetch();
+      await deleteConversation(prevRoomsRef.current)
+    }
+  }
+  
   useEffect(() => {
-    socket.on("get-new-message", (msg) => {
+    currRoomsRef.current = conversationId
+    socket?.off("join-conversation")?.emit("join-conversation",prevRoomsRef.current ,currRoomsRef.current )
+    
+    socket?.off("get-new-message")?.on("get-new-message", (msg) => {
+      console.log("new message")
       dispatch(addMessage(msg));
-      // console.log(msg);
     });
-  }, []);
+    
+    return ()=> prevRoomsRef.current = conversationId
+
+
+  }, [conversationId,socket]);
+
+
+
   // const isFetching = false;
 
   return (
     <section className="flex flex-col w-screen h-screen bg-primaryDark">
-      <ChatHeader />
+      <ChatHeader conversationId = {conversationId}/>
       <div className="h-full px-4 overflow-y-auto spacing-y-4 scrollbar-hide">
         {isFetching ? (
           <div className="h-full w-full flex items-center justify-center ">
@@ -65,7 +96,7 @@ function ChatComponent() {
           })
         )}
       </div>
-      <SendMessage conversationId={conversationId} />
+      <SendMessage conversationId={currRoomsRef.current} />
     </section>
   );
 }

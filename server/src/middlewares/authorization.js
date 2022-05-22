@@ -15,10 +15,10 @@ const verifyAuthMiddleware = catchAsync(async (req, res, next) => {
   if (!token) {
     next(new HttpException(400, "Token not found"));
   }
-  const decodedToken = await verifyJwt(token, process.env.SECRET_KEY);
+  const decodedToken = await verifyJwt(token, process.env.JWT_SECRET_KEY);
 
   const user = await User.findOne({
-    attributes: ["id", "email", "username"],
+    attributes: ["id", "email", "username", "imageURL", "verified", "location"],
     where: {
       id: decodedToken.id,
     },

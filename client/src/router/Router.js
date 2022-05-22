@@ -9,10 +9,10 @@ import ChatRouter from "./ChatRouter";
 import ChatHero from "../components/chat/ChatHero";
 import Profile from "../components/profile/Profile";
 import { useSelector } from "react-redux";
+import { SocketPorovider } from "../context/socketContext";
 
 function Router() {
   const user = useSelector((state) => state.user);
-
   return (
     <>
       <Routes>
@@ -21,7 +21,14 @@ function Router() {
         <Route path="/login" element={<Login />} />
         <Route path="/reset" element={<Reset />} />
         {user && (
-          <Route path="/" element={<Chat />}>
+          <Route
+            path="/"
+            element={
+              <SocketPorovider>
+                <Chat />
+              </SocketPorovider>
+            }
+          >
             <Route index element={<ChatHero />} />
             <Route path=":conversationId" element={<ChatComponent />} />
           </Route>

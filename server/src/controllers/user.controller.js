@@ -12,7 +12,19 @@ const getUsers = cathAync(async (req, res) => {
 
   res.status(status).send(response);
 });
+const updateUser = cathAync(async (req, res) => {
+  const { location, email, imageURL, username } = req.body;
+  const id = req.user.id;
+  console.log(location);
+  const { status, response } = await userService.updateUser(id, {
+    location,
+    email,
+    imageURL,
+    username,
+  });
 
+  res.status(status).send(response);
+});
 const fetchUser = cathAync(async (req, res) => {
   const { user } = req;
   res.status(200).json(user);
@@ -21,4 +33,5 @@ const fetchUser = cathAync(async (req, res) => {
 module.exports = {
   getUsers,
   fetchUser,
+  updateUser,
 };

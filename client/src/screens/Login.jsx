@@ -3,12 +3,13 @@ import { RiUser2Line } from "react-icons/ri";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
 import authContext from "../context/authContext";
-import { useSignInUserMutation } from "../services/appApi";
+import { useSignInUserMutation, useFetchLoggedUserQuery } from "../services/appApi";
 
 function Login() {
   //   const context = useContext(authContext);
   //   const { userState, loginHandler } = context;
   const [signUpUser, { isLoading, error }] = useSignInUserMutation();
+
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -31,7 +32,6 @@ function Login() {
       password,
     };
     const response = await signUpUser(userData);
-    console.log(response);
     if (response.data.token) {
       navigate("/");
     }

@@ -32,7 +32,6 @@ export const AuthProvider = (props) => {
     try {
       dispatchUser(registerStart());
       const res = await axiosInstance.post("user/register", userData);
-      console.log(res)
       dispatchUser(registerSuccess(res.data));
       navigate("/chat");
     } catch (error) {
@@ -63,4 +62,4 @@ export const AuthProvider = (props) => {
   );
 };
 
-export default authContext
+export default authContext;

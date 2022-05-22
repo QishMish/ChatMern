@@ -2,7 +2,6 @@ const { signJwt, verifyJwt } = require("../utils/jwt");
 const { User } = require("../models");
 const bcrypt = require("bcrypt");
 const { throwHttpException } = require("../exception/HttpException");
-const { json } = require("envalid");
 
 const register = async (email, username, password) => {
   const salt = await bcrypt.genSalt(10);
@@ -14,7 +13,10 @@ const register = async (email, username, password) => {
     password: hashedPassword,
   });
 
-  const token = await signJwt({ id: user.id });
+  const token = await signJwt({
+    id: user.id,
+    secret: process.env.JWT_SECRET_KEY,
+  });
 
   const { password: pass, ...others } = user.dataValues;
 
@@ -22,12 +24,11 @@ const register = async (email, username, password) => {
     status: 200,
     response: {
       token: token,
-      user: others,
+      // user: others,
     },
   };
 };
 const login = async (username, password) => {
-  console.log("token");
   const user = await User.findOne({
     where: {
       username: username,
@@ -41,7 +42,10 @@ const login = async (username, password) => {
   if (!passwordIsMatch) {
     throwHttpException(400, "Wrong username or password");
   }
-  const token = await signJwt({ id: user.id });
+  const token = await signJwt({
+    id: user.id,
+    secret: process.env.JWT_SECRET_KEY,
+  });
 
   const { password: pass, ...others } = user.dataValues;
 
@@ -49,7 +53,7 @@ const login = async (username, password) => {
     status: 200,
     response: {
       token: token,
-      user: others,
+      // user: others,
     },
   };
 };
